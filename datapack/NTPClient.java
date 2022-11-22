@@ -1,3 +1,5 @@
+package datapack;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -50,11 +52,12 @@ public class NTPClient
 		*/
 		serverName="pool.ntp.org";
 		// Send request
-		DatagramSocket socket = new DatagramSocket();
-		InetAddress address = InetAddress.getByName(serverName);
+		InetAddress localHost = InetAddress.getLocalHost();
+		DatagramSocket socket = new DatagramSocket(1000, localHost);
+		
 		byte[] buf = new NtpMessage().toByteArray();
 		DatagramPacket packet =
-		 new DatagramPacket(buf, buf.length, address, 123);
+		 new DatagramPacket(buf, buf.length, localHost , 1000);
 		// Set the transmit timestamp *just* before sending the packet
 		// ToDo: Does this actually improve performance or not?
 		NtpMessage.encodeTimestamp(packet.getData(), 40,
